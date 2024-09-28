@@ -10,34 +10,36 @@
   <div class="app-wrap">
     <header>
       <input type="text" autocomplete="off" class="search-box" placeholder="Search for a city..." />
+      <div id="loading" class="loading" style="display: none;">Loading...</div> <!-- Loading Indicator -->
     </header>
     <main>
       <section class="location">
-        <div class="city">New York, US</div>
-        <div class="date">Wednesday 22 July 2020</div>
+        <div class="city">Mumbai</div>
+        <div class="date">Today</div>
       </section>
       <div class="current">
-        <div class="temp">15<span>°c</span></div>
-        <div class="weather">Sunny</div>
-        <div class="hi-low">13°c / 16°c</div>
+        <div class="temp">28<span>°c</span></div>
+        <div class="weather">Rainy</div>
+        <div class="hi-low">25°c / 29°c</div>
       </div>
     </main>
-    
-    <!-- Buttons for additional weather info -->
+
+    <!-- Flexbox for Buttons -->
     <div class="buttons">
-      <button id="sunrise-sunset-btn">Sunrise & Sunset</button>
-      <button id="more-info-btn">More Weather Info</button>
-      <button id="forecast-btn">7-Day Forecast</button>
+      <button id="sunrise-sunset-btn" class="weather-btn">🌅 Sunrise & Sunset</button>
+      <button id="more-info-btn" class="weather-btn">ℹ️ More Weather Info</button>
+      <button id="forecast-btn" class="weather-btn">📅 7-Day Forecast</button>
     </div>
 
     <!-- Placeholder for additional weather info -->
     <div class="extra-info">
-      <div id="sunrise-sunset"></div>
-      <div id="more-info"></div>
-      <div id="forecast"></div>
+      <div id="sunrise-sunset" class="info-box"></div>
+      <div id="more-info" class="info-box"></div>
+      <div id="forecast" class="info-box"></div>
     </div>
+
+    <div id="error-message" class="error-message" style="display: none;"></div> <!-- Error message -->
   </div>
-  
   <script src="main.js"></script>
 </body>
 </html>

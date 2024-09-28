@@ -5,8 +5,8 @@
 }
 
 body {
-  font-family: 'montserrat', sans-serif;
-  background-image: url('bg.jpg');
+  font-family: 'Montserrat', sans-serif;
+  background-image: url('bg.avif');
   background-size: cover;
   background-position: top center;
 }
@@ -93,3 +93,58 @@ main {
   font-weight: 500;
   text-shadow: 0px 4px rgba(0, 0, 0, 0.4);
 }
+
+/* Flexbox for buttons */
+.buttons {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.weather-btn {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border: 2px solid white;
+  border-radius: 8px;
+  padding: 10px 20px;
+  margin: 0 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.weather-btn:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+  transform: scale(1.05);
+}
+
+/* Style for the extra info boxes */
+.extra-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.info-box {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  padding: 15px;
+  margin: 10px;
+  border-radius: 10px;
+  font-size: 18px;
+  text-align: center;
+  width: 100%;
+  max-width: 300px;
+  display: none; /* Hidden by default, shown when populated */
+}
+
+/* Show error messages more clearly */
+.error-message {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+}
+

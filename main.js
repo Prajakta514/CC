@@ -4,19 +4,79 @@ const api = {
 };
 
 const searchbox = document.querySelector('.search-box');
-searchbox.addEventListener('keypress', setQuery);
+const searchBtn = document.getElementById('search-btn');
+const loadingIndicator = document.getElementById('loading');
+const errorMessage = document.getElementById('error-message');
 
-function setQuery(evt) {
-  if (evt.keyCode == 13) {
+
+// Wait for the DOM to be fully loaded
+document.addEventListener("DOMContentLoaded", function () {
+  const sunriseSunsetBtn = document.getElementById("sunrise-sunset-btn");
+  const moreInfoBtn = document.getElementById("more-info-btn");
+  const forecastBtn = document.getElementById("forecast-btn");
+
+  const sunriseSunsetInfo = document.getElementById("sunrise-sunset");
+  const moreInfo = document.getElementById("more-info");
+  const forecastInfo = document.getElementById("forecast");
+
+  // Function to show/hide the content for Sunrise & Sunset
+  sunriseSunsetBtn.addEventListener("click", function () {
+    sunriseSunsetInfo.innerHTML = "Sunrise: 6:30 AM <br> Sunset: 7:45 PM"; // Sample data
+    sunriseSunsetInfo.style.display = "block"; // Show this section
+    moreInfo.style.display = "none"; // Hide others
+    forecastInfo.style.display = "none";
+  });
+
+  // Function to show/hide the content for More Info
+  moreInfoBtn.addEventListener("click", function () {
+    moreInfo.innerHTML = "Humidity: 60% <br> Wind Speed: 15 km/h"; // Sample data
+    moreInfo.style.display = "block"; // Show this section
+    sunriseSunsetInfo.style.display = "none"; // Hide others
+    forecastInfo.style.display = "none";
+  });
+
+  // Function to show/hide the content for 7-Day Forecast
+  forecastBtn.addEventListener("click", function () {
+    forecastInfo.innerHTML = "Day 1: 15°C<br> Day 2: 16°C <br> Day 3: 17°C"; // Sample data
+    forecastInfo.style.display = "block"; // Show this section
+    sunriseSunsetInfo.style.display = "none"; // Hide others
+    moreInfo.style.display = "none";
+  });
+});
+
+searchbox.addEventListener('keypress', function(evt) {
+  if (evt.keyCode === 13) {
     getResults(searchbox.value);
   }
-}
+});
+
+searchBtn.addEventListener('click', function() {
+  getResults(searchbox.value);
+});
 
 function getResults(query) {
+  if (!query) {
+    displayError("Please enter a city name.");
+    return;
+  }
+
+  loadingIndicator.style.display = 'block';
+  errorMessage.style.display = 'none';
+
   fetch(`${api.base}weather?q=${query}&units=metric&APPID=${api.key}`)
     .then(weather => {
+      if (!weather.ok) {
+        throw new Error("City not found");
+      }
       return weather.json();
-    }).then(displayResults);
+    })
+    .then(displayResults)
+    .catch(err => {
+      displayError(err.message);
+    })
+    .finally(() => {
+      loadingIndicator.style.display = 'none';
+    });
 }
 
 function displayResults(weather) {
@@ -46,8 +106,13 @@ function displayResults(weather) {
   });
 
   document.getElementById('forecast-btn').addEventListener('click', () => {
-    getForecast(query);
+    getForecast(weather.name);
   });
+}
+
+function displayError(message) {
+  errorMessage.innerText = message;
+  errorMessage.style.display = 'block';
 }
 
 function displaySunriseSunset(weather) {
@@ -65,10 +130,9 @@ function displayMoreInfo(weather) {
 
 function getForecast(query) {
   fetch(`${api.base}forecast/daily?q=${query}&cnt=7&units=metric&APPID=${api.key}`)
-    .then(forecast => {
-      return forecast.json();
-    })
-    .then(displayForecast);
+    .then(forecast => forecast.json())
+    .then(displayForecast)
+    .catch(err => displayError("Forecast data unavailable."));
 }
 
 function displayForecast(forecast) {
